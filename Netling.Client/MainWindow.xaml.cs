@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using Netling.Core;
 using Netling.Core.Models;
+using Netling.Core.Performance;
 
 namespace Netling.Client
 {
@@ -46,6 +49,9 @@ namespace Netling.Client
 
             Threads.SelectedIndex = 0;
             Url.Focus();
+
+            Method.ItemsSource = Enum.GetValues(typeof(HttpMethod)).Cast<HttpMethod>();
+            Method.SelectedIndex = 0;
         }
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
@@ -126,10 +132,28 @@ namespace Netling.Client
                 StatusProgressbar.Value = 0;
                 StatusProgressbar.Visibility = Visibility.Visible;
 
+                var httpMethod = (HttpMethod)Enum.Parse(typeof(HttpMethod), Method.SelectionBoxItem.ToString());
+                var body = new TextRange(Body.Document.ContentStart, Body.Document.ContentEnd).Text;
+                var headersText = new TextRange(Headers.Document.ContentStart, Headers.Document.ContentEnd).Text;
+
+                var headersArray = headersText.Split(new [] {'\n', '\r', '\t'}, StringSplitOptions.RemoveEmptyEntries);
+
+                var headers = new Dictionary<string, string>();
+                foreach (var s in headersArray)
+                {
+                    var header = s.Split(':');
+                    if (header.Length == 2)
+                    {
+                        var key = header[0];
+                        var value = header[1];
+                        headers.Add(key.Replace("\"",""), value.Replace("\"", ""));
+                    }
+                }
+
                 if (count.HasValue)
-                    _task = Worker.Run(uri, count.Value, cancellationToken);
+                    _task = Worker.Run(uri, count.Value, cancellationToken,httpMethod, body, headers);
                 else
-                    _task = Worker.Run(uri, threads, threadAffinity, pipelining, duration, cancellationToken);
+                    _task = Worker.Run(uri, threads, threadAffinity, pipelining, duration, cancellationToken, httpMethod, body, headers);
 
                 _task.GetAwaiter().OnCompleted(async () =>
                 {

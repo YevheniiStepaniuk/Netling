@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Netling.Client.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Netling" Width="500" Height="220" ResizeMode="NoResize">
+        Title="Netling" Width="593.902" Height="640" ResizeMode="NoResize">
     <Grid Margin="10">
         <StackPanel Orientation="Horizontal">
             <StackPanel Margin="0,0,20,0">
@@ -48,6 +48,13 @@
                     <ComboBoxItem>500</ComboBoxItem>
                 </ComboBox>
             </StackPanel>
+
+            <StackPanel Margin="0,0,20,0">
+                <TextBlock Text="Methdo" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <ComboBox x:Name="Method" VerticalAlignment="Top" HorizontalAlignment="Left" Width="60" Height="25" Margin="0,5,0,0">
+                </ComboBox>
+            </StackPanel>
+
             <StackPanel Margin="0,0,20,0">
                 <TextBlock Text="Thread affinity" VerticalAlignment="Top" HorizontalAlignment="Left" />
                 <CheckBox x:Name="ThreadAffinity" VerticalAlignment="Top" HorizontalAlignment="Left" Width="60" Margin="0,10,0,0"/>
@@ -55,7 +62,25 @@
         </StackPanel>
         
         <TextBlock Text="URL" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,61,0,0"/>
-        <TextBox x:Name="Url" VerticalAlignment="Stretch" KeyUp="Urls_OnKeyUp" HorizontalAlignment="Stretch" Padding="6" Margin="0,82,0,50" />
+        <TextBox x:Name="Url" VerticalAlignment="Top" KeyUp="Urls_OnKeyUp" HorizontalAlignment="Stretch" Padding="6" Margin="0,82,0,50" Height="30" />
+
+        <TextBlock Text="Body" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,121,0,0"/>
+        <RichTextBox x:Name="Body" VerticalAlignment="Top" HorizontalAlignment="Stretch" Padding="6" Margin="0,142,0,50"  Height="200">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
+
+        <TextBlock Text="Headers" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,356,0,0"/>
+        <RichTextBox x:Name="Headers" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Padding="6" Margin="0,142,0,50"  Height="150">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
 
         <Button Content="Run" x:Name="StartButton" Background="#ff0079c5" BorderThickness="0" Foreground="White" Click="StartButton_Click" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="100" Height="30"/>
         <ProgressBar x:Name="StatusProgressbar" VerticalAlignment="Bottom" Minimum="0" Maximum="100" HorizontalAlignment="Stretch" Visibility="Hidden" Height="16" Margin="120,0,0,7" />

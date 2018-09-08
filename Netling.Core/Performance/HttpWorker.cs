@@ -33,7 +33,13 @@ namespace Netling.Core.Performance
             var headersString = string.Empty;
             var contentLength = data != null ? data.Length : 0;
 
-            if (headers != null && headers.Any())
+            if(headers == null)
+                headers = new Dictionary<string, string>();
+
+            if(!headers.ContainsKey("content-type"))
+                headers.Add("content-type", "application/json");
+
+            if (headers.Any())
                 headersString = string.Concat(headers.Select(h => "\r\n" + h.Key.Trim() + ": " + h.Value.Trim()));
 
             if (_uri.HostNameType == UriHostNameType.Dns)

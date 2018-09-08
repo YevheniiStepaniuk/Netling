@@ -6,5 +6,6 @@ namespace Netling.Core.Performance
     {
         public static readonly byte[] ContentLength = Encoding.ASCII.GetBytes("\r\nContent-Length: ");
         public static readonly byte[] TransferEncoding = Encoding.ASCII.GetBytes("\r\nTransfer-Encoding: ");
+        public static readonly byte[] ContentType = Encoding.ASCII.GetBytes("\r\nContentType: ");
     }
 }
